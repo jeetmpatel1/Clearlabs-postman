@@ -1,0 +1,132 @@
+{
+	"info": {
+		"_postman_id": "2b8966b5-baa7-4dbf-a593-65f8e83dca7c",
+		"name": "clear-labs",
+		"description": "This Collection has total 5 test cases.\r\n\r\n1. Mandatory Latitude and Longitude check.\r\n\r\n2. Response time is less than expected value. [200ms]\r\n\r\n3. Temperature is within the range of defined limits [ 250 - 300 ]\r\n\r\n4. No Rain/Snow Reported in last three hours.\r\n\r\n5. Wind speed is greater than defined value. [3 mph ]\r\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b899b414-6757-4f5f-b359-16bee0e6cc2c",
+						"exec": [
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"var expected_lat = pm.globals.get(\"expected_lat\");\r",
+							"var expected_long = pm.globals.get(\"expected_long\");\r",
+							"\r",
+							"var expected_response_time = pm.globals.get(\"expected_response_time\");\r",
+							"\r",
+							"var expected_min_temp = pm.globals.get(\"expected_min_temp\");\r",
+							"var expected_max_temp = pm.globals.get(\"expected_max_temp\");\r",
+							"\r",
+							"var expected_wind_speec = pm.globals.get(\"expected_wind_speec\");\r",
+							"\r",
+							"pm.test(\"Latitude and Longitude are as expected [ \" +expected_lat  +   \",\" +  expected_long + \"] \", () => {\r",
+							"  pm.expect(responseJson.coord.lon).to.eql(expected_lat);\r",
+							"  pm.expect(responseJson.coord.lat).to.eql(expected_long);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than expected value. [\"+ expected_response_time +\"ms] \", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(expected_response_time);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Temperature is within the range of defined limits [ \"+ expected_min_temp +\" - \"+ expected_max_temp + \" ] \", () => {\r",
+							"  pm.expect(responseJson.main.temp).greaterThan(expected_min_temp).lessThan(expected_max_temp);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"No Rain/Snow Reported in last three hours. \", () => {\r",
+							"  pm.expect(responseJson).to.not.have.any.keys('rain', 'snow');\r",
+							"});\r",
+							"\r",
+							"pm.test(\" Wind speed is greater than defined value. [\"+expected_wind_speec +\" mph ] \", () => {\r",
+							"  pm.expect(responseJson).to.have.any.keys('wind');\r",
+							"  pm.expect(responseJson.wind.speed).greaterThan(expected_wind_speec);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "57c158a1-61f6-4e20-b907-96ca3faf5dbe",
+						"exec": [
+							"pm.globals.set(\"expected_lat\", -0.13);\r",
+							"pm.globals.set(\"expected_long\", 51.51);\r",
+							"\r",
+							"\r",
+							"pm.globals.set(\"expected_response_time\", 200);\r",
+							"\r",
+							"pm.globals.set(\"expected_min_temp\", 250);\r",
+							"pm.globals.set(\"expected_max_temp\", 300);\r",
+							"\r",
+							"pm.globals.set(\"expected_wind_speec\", 3);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22",
+					"protocol": "https",
+					"host": [
+						"samples",
+						"openweathermap",
+						"org"
+					],
+					"path": [
+						"data",
+						"2.5",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "London,uk"
+						},
+						{
+							"key": "appid",
+							"value": "b6907d289e10d714a6e88b30761fae22"
+						}
+					]
+				},
+				"description": "This collection is for Evaluation purpose of Clearlabs. Tests are defined as per the requirements stated in email. "
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "569b99bc-809e-4712-b2a7-6ba5b147c0ef",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e91413eb-077b-418b-b296-3336290d4e65",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
